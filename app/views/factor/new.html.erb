@@ -1,0 +1,14 @@
+<div id="factor_form">
+	<%= form_for (@factor), url: {action: "create"} do |f| %>
+    <table>
+    	<tr>
+    		<td>要因名</td>
+    		<td><%= f.text_field :factor_name%></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    		<td><%= f.submit '提交' %></td>
+    	</tr>
+    </table>
+	<% end %>
+</div>

@@ -1,0 +1,19 @@
+<div>
+	<h3>对应的测试文件</h3>
+	<%= link_to '添加新的测试文件', :controller=>"test_file", :action=>"new", :project_id=>@project.id  %>
+	<br/>
+	  <%= @project.project_name %>
+	  <table cellpadding="0" cellspacing="0" border="1">
+	    <tr>
+	    	<th>测试文件</th>
+	    	<th>操作</th>
+	    </tr>
+	  <% @test_file.each do |test_file| %>
+	  	<tr>
+	  		<td><%= test_file.test_file_name %></td>
+	  		<td><%= link_to '编辑测试文件', :controller=>"test_file", :action=>"show", :id=>test_file.id %></td>
+	  	</tr>
+	  <% end %>
+	  </table>
+	  <br/>
+</div>

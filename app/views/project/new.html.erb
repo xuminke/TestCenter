@@ -1,0 +1,14 @@
+<div id="project_form">
+	<%= form_for (@project), url: {action: "create"} do |f| %>
+    <table>
+    	<tr>
+    		<td>项目工程 </td>
+    		<td><%= f.text_field :project_name%></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    		<td><%= f.submit '提交' %></td>
+    	</tr>
+    </table>
+	<% end %>
+</div>

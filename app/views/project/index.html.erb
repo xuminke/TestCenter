@@ -1,0 +1,11 @@
+<div>
+	<h3>所有的工程</h3>
+	  <table>
+		  <% @project.each do |project| %>
+	      <tr>
+	      	<td><%= project.project_name%></td>
+	      	<td><%= link_to 'Show', "/project/show/#{project.id}" %></td>
+	      </tr>     
+		  <% end %>
+	  </table>
+</div>
