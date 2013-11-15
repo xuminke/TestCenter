@@ -1,5 +1,5 @@
 <div>
-	<table border="1" cellpadding="0" cellspacing="0">
+	<table class="table table-bordered">
 	  <tr>
 	  	<th>编号</th>
 	  	<th>内容</th>
@@ -11,11 +11,10 @@
 	  	<th>标记</th>
 	  	<th>再实施日</th>
 	  	<th>再实施者</th>
-      <th><button  data-toggle="modal" data-target="#myModal" width="30px">set default</button></th>
-	  	
+      <th><button  data-toggle="modal" data-target="#myModal" class="set_default" width="30px">set default</button></th>	  	
 	  </tr>
 	  <% @example.each_with_index do |example,index| %>
-      <tr>
+      <tr class="example_case_parent" >
         <td><%= index+1 %></td>
         <td>
           <% arr_array = example.content.split(",") %>
@@ -33,28 +32,147 @@
         <td><%= example.remark %></td>
         <td><%= example.again_implement_time %></td>
         <td><%= example.again_implement_people %></td>
-        <td><button data-toggle="modal" data-target="#myModal" width="30px">edit</button></td>
+        <td><button data-toggle="modal" class="edit_case" data-target="#myModal" width="30px" data="<%= example.id%>">编辑case</button>
+        <button class="example_case" value="fill" data="<%= example.id%>">填充颜色</button>
+        </td>
       </tr>
 	  <% end %>
 	</table>
-</div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>     
+   
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Edit Case</h4>
       </div>
-      <div class="modal-body">
-        
+      <div class="modal-body" style="height:500px;width:650px;">
+        <form method="post" id="edit_form" class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="inputstatus" class="col-sm-2 control-label">正常/异常:</label>
+              <div class="col-sm-10"> 
+              <select class="form-control" style="width:80%;" id="status" name="status">
+                <option></option>
+                <option>正常</option>
+                <option>异常</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputaffirm" class="col-sm-2 control-label" >确认内容:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="affirm" name="affirm" placeholder="" style="width:80%;"> 
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">测试结果:</label>
+              <div class="col-sm-10">
+                <select class="form-control" style="width:80%;" id='result' name="result">
+                  <option></option>
+                  <option>OK</option>
+                  <option>NG</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">实施日:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="implement_time" name="implement_time" placeholder="" style="width:80%;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">实施者:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="implement_people" name="implement_people" placeholder="" style="width:80%;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">标记:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="" style="width:80%;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">再实施日:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="again_implement_time" name="again_implement_time" placeholder="" style="width:80%;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">再实施者:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="again_implement_people" name="again_implement_people" placeholder="" style="width:80%;">
+              </div>
+            </div>
+            <input type="hidden" name="example_id" id="example_id">
+            <input type="hidden" name="test_file_id" id="test_file_id" value="<%= @test_file_id %>">
+            <button type="submit" class="btn btn-primary" style="margin-left:107px;margin-top:10px;">Submit</button>
+            <button type="reset" class="btn btn-primary" style="margin-left:30px;margin-top:10px;">Reset</button>
+        </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    </div>
+  </div>
 </div>
   
-</div>
+</div> 
+ <script type="text/javascript">
+    $("document").ready(function(){
+    $(".edit_case").click(function(){
+      var key = $(this).attr("data");
+      var action_url = "/examples/"+ key +"/edit_case";
+      $("#edit_form").attr("action", action_url);
+      var get_info_url = "/examples/"+ key +"/get_info";
+      $.get(get_info_url, function(data){
+        console.log(data)
+        $("#status").val(data.status);
+        $("#affirm").val(data.affirm);
+        $("#result").val(data.result);
+        $("#implement_time").val(data.implement_time);
+        $("#implement_people").val(data.implement_people);
+        $("#remark").val(data.remark);
+        $("#again_implement_time").val(data.again_implement_time);
+        $("#again_implement_people").val(data.again_implement_people);
+        $("#example_id").val(data.example_id);
+      });
+    });
+    $(".set_default").click(function(){
+      $("#edit_form").attr("action","/examples/set_default");
+      // var key = "<%= @test_file_id %>";
+      // var get_info_url = "/examples/"+ key +"/set_default";
+      // $.get(get_info_url, function(data){
+      //   console.log(data);
+      //   console.log(data.status);
+      //   console.log(data.affirm);
+      //   console.log(data.example_id);
+      //   $("#status").val(data.status);
+      //   $("#affirm").val(data.affirm);
+      //   $("#result").val(data.result);
+      //   $("#implement_time").val(data.implement_time);
+      //   $("#implement_people").val(data.implement_people);
+      //   $("#remark").val(data.remark);
+      //   $("#again_implement_time").val(data.again_implement_time);
+      //   $("#again_implement_people").val(data.again_implement_people);
+      //   $("#example_id").val(data.example_id);
+      // });
+    });
+    $(".example_case").click(function(){
+      if($(this).val()==="fill"){
+        $(this).parents('.example_case_parent').css("background","#00CCFF");
+        $(this).val("cancel_fill");
+        $(this).html("取消填充");
+        var key = $(this).attr("data");
+      }
+      else{
+        $(this).parents('.example_case_parent').css("background","");
+        $(this).val("fill");
+        $(this).html("填充颜色");
+      }
+      
+     
+    });
+  });
+  </script>
+
+
 

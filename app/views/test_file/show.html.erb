@@ -1,21 +1,163 @@
+<% content_for :content_right do %>  
 <div>
-	<h3>对应的测试文件</h3>
-	  <%= @test_file.test_file_name %>
+    <label class="test_file_show">
+	    <%= @project_name%>&nbsp;&nbsp;&nbsp;<label>--></label>&nbsp;&nbsp;&nbsp;<%= @test_file.test_file_name %>
+    </label>
 	  <br/>
-	  <%= link_to "添加要因", :controller=>"factor", :action=>"new" %>
-	  <br/>
-	  <table cellpadding="0" cellspacing="0" border="1">
+	  <table class="table table-bordered", width="400px">
 	    <tr>
-	    	<th>要因</th>
-	    	<th>操作</th>
+	      <th>操作</th>
+	    	<th>要因</th> 	
 	    </tr>
-	  <% @factor.each do |factor| %>
+	    <% @factor.each_with_index do |factor,index| %>  
 	  	<tr>
-	  		<td><%= factor.factor_name %></td>
-	  		<td><%= link_to '添加因子', :controller=>"divisor", :action=>"new", :factor_id=>factor.id  %></td>
+	  	  <td>
+          <%= link_to '添加因子', :controller=>"divisor", :action=>"new", :factor_id=>factor.id  %>
+          <%= link_to '删除要因', url_for(:controller=>"factor", :action=>"destroy",:id=>factor.id),:method=>:delete , :confirm => "Are you sure?"%>
+          <a href="#" class="destroy_divisor" data="<%= factor.id %>">删除因子</a>
+        </td>
+	  		<td><%= factor.factor_name %></td>	
+	  		<% divisor =[] %>  
+	  		<% divisor = Divisor.find_all_by_factor_id(factor.id) %>
+	  		<% divisor.each do |d| %>
+	  		<td><input type="checkbox" value="<%= d.id %> " name="factor_<%= index+1 %>">&nbsp;&nbsp;&nbsp;&nbsp;<%= d.divisor_name %></td> 	
+	  		<% end %>	
 	  	</tr>
 	  <% end %>
 	  </table>
 	  <br/>
-	  <%= link_to '生成case', :controller=>"rule", :action=>"create", :test_file=>@test_file.id %>
+	  <button name="create_case" id="sublim_case">生成case</button>
+    <button name="add_factor" id="add_factor">添加要因</button>
 </div>
+<div id="destroy_divisor">
+  <div class="destroy_divisor_top">
+    <label>因子操作</label>
+  </div>
+  <div class="destroy_divisor_left"></div>
+  <div class="destroy_divisor_middle">
+    <label class="middle_first">--></label>
+    <label class="middle_second"><--</label>
+  </div>
+  <div class="destroy_divisor_right"></div>
+  <div class="destroy_divisor_bottom">
+    <label>
+      <button class="btn right_div">提交</button>
+      <button class="btn cancel">取消</button>
+    </label>
+  </div>
+</div>
+<script>
+	function encodeArray2D(obj) {
+    var array = [];
+    for (var i = 0; i < obj.length; i++) {
+        array[i] = '[' + obj[i].join(',') + ']';
+    }
+    return '[' + array.join(',') + ']';
+}
+  	$("document").ready(function(){ 
+  	var factor_size = <%= @factor.size %>;
+    var data_case=[];  
+    $("#sublim_case").click(function(){
+    	for(var i=1;i<=factor_size;i++){
+    		var arr=[];
+    		if($("input[name='factor_"+i+"']").each(function(i){
+          if($(this).is(':checked')){
+          	var value= $(this).val();
+          	arr.push(value);
+          }
+    		}))
+    		data_case.push(arr);  		
+    }
+    var xx=encodeArray2D(data_case)
+    alert(xx)
+    window.location.href = "/rule/create?test_file=<%= @test_file.id %>&data="+xx   
+    });
+
+    $("#add_factor").click(function(){
+      window.location.href = "/factor/new?test_file_id=<%= @test_file.id %>"
+    })
+	});
+
+    //使用Ajax获得某一个要因的因子列表
+    $("document").ready(function(){
+      $(".destroy_divisor").click(function(){
+        $("#destroy_divisor").css("display","block");
+        var key = $(this).attr("data");
+        var get_info_url = "/factor/"+key+"/get_info";
+        $.get(get_info_url,function(data){
+          var j = data.divisors.length;
+          var i=0;
+          var divisor_list_div = $(".destroy_divisor_left");
+          var divisor_list_div_right = $(".destroy_divisor_right");
+          var divisor_list_div_label = $(".destroy_divisor_left div");
+          //var divisor_list_div_br = $(".destroy_divisor_left br");
+          divisor_list_div_label.remove();
+          //divisor_list_div_br.remove();
+          for(i=0;i<j;i++){
+            var divisor = null;
+            var br = null;
+            divisor = document.createElement("div")
+            //br = document.createElement("br")
+            divisor.setAttribute("class","divisor_click");
+            divisor.setAttribute("value",data.divisors[i].id)
+            divisor.innerHTML=data.divisors[i].divisor_name;
+            divisor_list_div.append(divisor)
+            //divisor_list_div.append(br)
+          }
+
+          //绑定鼠标滑过事件，添加样式
+          $(".divisor_click").mouseover(function(){
+            $(this).css("cursor","pointer");
+            $(this).css("background-color","yellow");
+          }).mouseout(function(){
+            $(this).css("background-color","white");
+          })
+          
+          $(".divisor_click").click(function(){
+            //从左向右移动
+            if(this.className == "divisor_click"){
+              var removed_dom = $(this).detach();
+              divisor_list_div_right.append(removed_dom);
+            // 从右向左移动  
+              removed_dom.attr("class","click_divisor_right");
+            }else if(this.className == "click_divisor_right"){
+              var removed_dom_right = $(this).detach();
+              divisor_list_div.append(removed_dom_right);
+              removed_dom_right.attr("class","divisor_click");
+            }
+
+          });
+          
+        });
+      });
+      $(".cancel").click(function(){
+        $(".destroy_divisor_left div").remove();
+        $(".destroy_divisor_right div").remove();
+        $("#destroy_divisor").css("display","none");
+      });
+    
+
+    //当点击提交的时候获得右侧的所有div的value
+    $(".right_div").click(function(){
+      var all_div = $(".click_divisor_right");
+      var j = all_div.length
+      var right_div_value=[]
+      for(var i=0;i<j;i++){
+        var val=null;
+        val = all_div[i].getAttribute("value");
+        right_div_value.push(val);
+      }
+      alert(right_div_value);
+      $("#destroy_divisor").css("display","none");
+      window.location.href="/divisor/destroy?divisor_arr="+right_div_value;
+    })
+
+    });
+  
+
+	
+</script>
+
+<% end %>
+
+

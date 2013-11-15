@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>在线测试系统</title>
+  <%= stylesheet_link_tag "bootstrap" %>
+  <%= stylesheet_link_tag "home_index" %>
+  <%= stylesheet_link_tag "style" %>
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "jquery-2.0.3.min" %>
+  <%= javascript_include_tag "bootstrap.min" %>
+  <%= yield :css%>
+  <style type="text/css">
+    body{
+      background:url(<%= asset_path 'bodybg.jpg'%>) repeat-x;
+      font-family: Verdana, Geneva, sans-serif; 
+    }
+  </style>
+</head>
+<body>
+  <div id="bodywrap">
+    <section id="pagetop">
+      <p id="siteinfo">
+        Resource Orchestrator Test
+      </p>
+    </section>
+  </div>
+  <div id="contents">
+  <div id="contents-left">
+  <div id="contents-left-top">
+    <div id="contents_left_all_group">所有组</div>
+      <div id="contents-left-bottom">
+      <ul class="contents-left-bottom-ul">
+          <% @groups_all.each do |items| %>         
+            <li class="contents-left-bottom-ul-li">
+              <h4 style="padding-left:30px; cursor:pointer">
+                <a href="/project/find_project_group?group_id=<%= items.id %>"><%= items.group_name %></a>
+              </h4>
+            </li>        
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="contents-right">
+    <%= yield :content_search %>
+    <%= yield :content_right %>
+  </div>
+  </div>
+  <div id="pagefooter">
+    <div id="footerwrap">
+        Copyright © 2013 NANJING FUJITSU NANDA SOFTWARE TECHNOLOGY CO., LTD. 京ICP备05052384号
+    </div>
+  </div>
+  
+  
+</body>
+</html>
+<script type="text/javascript">
+  $("document").ready(function(){
+    $(".contents-left-bottom-ul-li h4").click(function(){
+      var dom = $(".contents-left-bottom-ul-item", $(this).parent());
+      dom.fadeToggle(0);
+    });
+    $(".contents-left-bottom-ul-li").mouseover(function(){      
+      $(this).css("background","#ffffcc");
+    }).mouseout(function(){
+      $(this).css("background","");
+    });
+    $(".contents-left-bottom-ul-item-xx a") 
+  });
+
+</script>

@@ -1,16 +1,32 @@
 class FactorController < ApplicationController
-  def test
-  end
+  layout 'home_index'
 
   def new
   	@factor = Factor.new()
+    @factor.test_file_id = params[:test_file_id]
   end
 
   def create
   	@factor = Factor.new(params[:factor])
-    @factor.test_file_id=session[:file_id]
+    @factor.test_file_id=params[:test_file_id]
   	@factor.save
-    session[:file_id]= nil
-  	redirect_to :action=>"test"
+  	redirect_to :controller=>"test_file", :action=>"show", :id=>"#{@factor.test_file_id}"
   end
+
+  def destroy
+    factor = Factor.find(params[:id])
+    factor.destroy
+    redirect_to :back
+  end
+
+  def get_info
+    p params[:id]
+    divisors = Divisor.where("factor_id=?",params[:id])
+    @rsc={ 
+      :divisors=>divisors
+    }
+    render :json=>@rsc
+
+  end
+
 end

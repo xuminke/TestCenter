@@ -1,0 +1,15 @@
+<% content_for :content_right do %>  
+    <table class="table">
+      <tr>
+        <th>年份</th>
+        <th>编号</th>
+      </tr>
+      <% @versions.each do |item| %>
+        <tr>
+          <td><%= item.work_year %></td>
+          <td><%= item.identifer %></td>
+        </tr>
+      <% end %>
+    </table>
+  
+<% end %>

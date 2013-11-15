@@ -1,0 +1,13 @@
+<% content_for :content_right do %>
+<div>
+  <h3>所有组</h3>
+    <table>
+      <% @group.each do |item| %>
+        <tr>
+          <td><%= item.group_name%></td>
+        </tr>     
+      <% end %>
+    </table>
+</div>
+
+<% end %>

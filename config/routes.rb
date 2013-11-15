@@ -1,5 +1,45 @@
 TestCenter::Application.routes.draw do
 
+  resources :examples do
+    member do
+      get 'get_info'
+      post 'edit_case'
+    end
+    collection do
+      post 'set_default'
+    end
+  end
+  
+  get "project/index"
+  get "project/get_project"
+  get "project/find_project_group"
+  get "attachments/upload"
+  resources :project do
+    member do
+      get 'get_info'
+      post 'edit_project'
+      get 'get_identifer'
+    end 
+  end
+
+  resources :test_file do
+    member do
+      get 'get_info'
+      post 'edit_test_file'
+    end 
+  end
+
+  resources :factor do
+    member do
+      get 'get_info'
+    end 
+  end
+  # resources :test_file
+  # resources :factor
+  # resources :divisor
+  # resources :rule
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -49,7 +89,7 @@ TestCenter::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-   root :to => 'home#index'
+   root :to => 'versions#index'
 
   # See how all your routes lay out with "rake routes"
 
