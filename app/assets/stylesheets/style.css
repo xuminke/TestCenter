@@ -158,3 +158,92 @@
   margin-bottom: 10px;
   float: left;
 }
+#attachment_all{
+  /*border:1px solid #CCC;*/
+  width:100%;
+  height:200px;
+  overflow: auto;
+}
+/*#project_search_top{
+  border:1px solid #eeeeee;
+  background-color: #f5f5f5;
+  color:#333333;
+  width:102%;
+  height:20px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  margin-left: -15px;
+}*/
+#project_search{
+  border:1px solid #ccc;
+  /*background:#ccc;*/
+  color:#333333;
+  width: 101.8%;
+  display: block;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  margin-left: -20px;
+}
+#project_search_top{
+  border:1px solid #ffffff;
+  width: 100%;
+  height:40px;
+  background-color: white;
+  margin-top: 3px;
+  margin-left: 0px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+}
+.project_search_top_span{
+  float:left;
+  margin-left:20px;
+  font-size: 1.2em;
+  margin-top: 5px;
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif !important;
+}
+#project_search_bottom{
+  display: none;
+  height:60px;
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif !important;
+  font-size: 1.1em;
+}
+#project_content{
+  border:1px solid #CCC;
+  margin-top: 10px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  border-bottom-style: none;
+  margin-left: -20px;
+}
+.project_search_top_span_1{
+  float: right;
+  margin-right: 50px;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.search_add .search_jian{
+  text-decoration: none;
+}
+
+#project_index_top{
+  border:1px solid #ffffff;
+  width: 102%;
+  height:40px;
+  background-color: white;
+  margin-top: 0px;
+  margin-left: -20px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+}
+.project_index_top_span{
+  float:left;
+  margin-left:20px;
+  font-size: 1.2em;
+  margin-top: 5px;
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif !important;
+}
+#project_index_content{
+  margin-top: 10px;
+  margin-left: -20px;
+  border-bottom-style: none;
+}

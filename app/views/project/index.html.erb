@@ -1,17 +1,27 @@
 <% content_for :content_right do %>
-<div>
-	<h3>所有的工程</h3>
-	  <table class="table table-bordered">
-		  <% @project.each do |project| %>
-	      <tr>
-	      	<td><%= project.project_name %></td>
-	      	<td><%= link_to 'Show', "/project/show/#{project.id}" %></td>
-	      	<td><%= link_to 'Destroy', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
-	      </tr>     
-		  <% end %>
-    </table>
+<div id="project_index_top">
+  <span class="project_index_top_span">所有作业列表</span>
 </div>
-<button class="create_project">新建工程</button>
+<div id="project_index_content">
+  <table class="table table-bordered">
+	  <% @project.each do |project| %>
+      <tr>
+      	<td><%= project.project_name %></td>
+      	<td><%= link_to 'Show', "/project/show/#{project.id}" %></td>
+      	<td><%= link_to 'Destroy', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
+      </tr>     
+	  <% end %>
+  </table>
+  <div style="text-align: center;color: gray">
+    <div class="digg_pagination">
+        <div class="page_info" style="float:right;margin-right:50px;">
+            <span>共找到<%= @project.total_entries %>条记录,共<%= @project.total_pages%>页</span><span style="margin-left:50px;"><%= will_paginate @project ,:container => false,:previous_label => '上一页', :next_label => '下一页' %></span>
+        </div> 
+        
+    </div>  
+  </div>
+</div>
+<!-- <button class="create_project"> 添加新的作业</button>
 <div id="new_project_id", class="new_project">
   <div id="new_project_dialog"><label style="font-size:1.2em;">Create new Project </label></div>	
 	<div id="project_form" style="margin-top:10px;">
@@ -35,22 +45,22 @@
 	    </div> 
 		<% end %>
   </div>
-</div>
-<script>
-  $("document").ready(function(){
-  	$(".create_project").click(function(){
-  		$(".new_project").css("display","block");
-  	});
-  });
-  $(".cancel").click(function(){
-  	$(".new_project").css("display","none");
-  	return false;
-  })
-  $(".work_year_select").change(function(){
-    alert("ll")
+</div> -->
+ <script>
+//   $("document").ready(function(){
+//   	$(".create_project").click(function(){
+//   		$(".new_project").css("display","block");
+//   	});
+//   });
+//   $(".cancel").click(function(){
+//   	$(".new_project").css("display","none");
+//   	return false;
+//   })
+//   $(".work_year_select").change(function(){
+//     alert("ll")
     
-  })
+//   })
 
-</script>
+// </script>
 
 <% end %>

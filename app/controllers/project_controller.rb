@@ -3,7 +3,8 @@ class ProjectController < ApplicationController
   before_filter "project_search"
   #index page
   def index
-    @project = Project.find(:all)
+    @project = Project.paginate(:page=>params[:page],:per_page=>15)
+    @projects = @project
     @project_new = Project.new
     version = Version.find(:all)
     @group_items = []
@@ -34,17 +35,21 @@ class ProjectController < ApplicationController
 
   def create
     @project = Project.new(params[:project])
-    group = Group.find(:first, :conditions=>{:group_name=>"#{params[:project][:group_id]}"})  
-    @project.group_id = group.id
-    p group.id
+    p @project
+    p "9999999999999999999999999999999999999999999999999999"
+    #group = Group.find(:first, :conditions=>{:group_name=>"#{params[:project][:group_id]}"})  
+    @project.group_id = params[:group_id]
+    p @project.group_id
+    p "9999999999999999999999999999999999999999999999999999"
     @project.save
     id = @project.id
-    redirect_to :action=>"index"
+    redirect_to :back
   end
 
   def show
     @project = Project.find(params[:id])
     @test_file= TestFile.find(:all, :conditions=>{:project_id=>"#{@project.id}"})
+    @attachment_all = Attachment.find(:all,:conditions=>{:project_id=>"#{@project.id}"})
   end
 
   def destroy
@@ -75,7 +80,7 @@ class ProjectController < ApplicationController
 
   def find_project_group
    @group_id = params[:group_id]
-   @project = Project.where("group_id=?", @group_id)
+   @project = Project.where("group_id=?", @group_id).paginate(:page=>params[:page],:per_page=>15)
    version = Version.find(:all)
    @work_year = []
     @identifers = []
@@ -90,6 +95,7 @@ class ProjectController < ApplicationController
       end
     end
     @work_year = @work_year.uniq!
+    @project_new = Project.new()
   end
 
   def project_search

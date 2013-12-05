@@ -1,45 +1,48 @@
-<div>
-	<table class="table table-bordered">
-	  <tr>
-	  	<th>编号</th>
-	  	<th>内容</th>
-	  	<th>正常/异常</th>
-	  	<th>确认内容</th>
-	  	<th>测试结果</th>
-	  	<th>实施日</th>
-	  	<th>实施者</th>
-	  	<th>标记</th>
-	  	<th>再实施日</th>
-	  	<th>再实施者</th>
-      <th><button  data-toggle="modal" data-target="#myModal" class="set_default" width="30px">set default</button></th>	  	
-	  </tr>
+<% content_for :content do %>
+<div id="content">
+<div id="example_top">
+  <div class="example_top_1">编号</div>
+  <div class="example_top_2">内容</div>
+  <div class="example_top_3">正常/异常</div>
+  <div class="example_top_4">确认内容</div>
+  <div class="example_top_5">测试结果</div>
+  <div class="example_top_6">实施日</div>
+  <div class="example_top_7">实施者</div>
+  <div class="example_top_8">标记</div>
+  <div class="example_top_9">再实施日</div>
+  <div class="example_top_10">再实施者</div>
+  <div class="example_top_11"><button  data-toggle="modal" data-target="#myModal" class="set_default" width="30px">set default</button></div>
+</div>
+<div id="example_table">
+<table valign="middle">
 	  <% @example.each_with_index do |example,index| %>
-      <tr class="example_case_parent" >
-        <td><%= index+1 %></td>
-        <td>
+      <tr class="example_case_parent" style="<%="background:#ccc" if example.remark == 1%>">
+        <td class="example_top_1"><%= index+1 %></td>
+        <td class="example_top_12">
           <% arr_array = example.content.split(",") %>
           <% str = nil %>
           <% arr_array.each do |item| %>
-            <%= @arr[item]%>
+            <% @factor %>
+            <% @factor = Factor.find_by_id((Divisor.find(item)).factor_id)%>
+            <%= @factor.factor_name%>-><%= @arr[item]%>
             <br/>
           <% end %>
         </td>
-        <td><%= example.status %></td>
-        <td><%= example.affirm %></td>
-        <td><%= example.result %></td>
-        <td><%= example.implement_time %></td>
-        <td><%= example.implement_people %></td>
-        <td><%= example.remark %></td>
-        <td><%= example.again_implement_time %></td>
-        <td><%= example.again_implement_people %></td>
-        <td><button data-toggle="modal" class="edit_case" data-target="#myModal" width="30px" data="<%= example.id%>">编辑case</button>
-        <button class="example_case" value="fill" data="<%= example.id%>">填充颜色</button>
+        <td class="example_top_3"><%= example.status %></td>
+        <td class="example_top_4"><%= example.affirm %></td>
+        <td class="example_top_5"><%= example.result %></td>
+        <td class="example_top_6"><%= example.implement_time %></td>
+        <td class="example_top_7"><%= example.implement_people %></td>
+        <td class="example_top_8"><%= example.remark %></td>
+        <td class="example_top_9"><%= example.again_implement_time %></td>
+        <td class="example_top_10"><%= example.again_implement_people %></td>
+        <td class="example_top_11"><button data-toggle="modal" class="edit_case" data-target="#myModal" width="30px" data="<%= example.id%>">edit</button>
+        <button class="example_case" value="fill" data="<%= example.id%>" style="width:60px;">color</button>
         </td>
       </tr>
 	  <% end %>
-	</table>
-</div>     
-   
+	</table>    
+  </div> 
  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -90,7 +93,7 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-2 control-label">标记:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="remark" name="remark" placeholder="" style="width:80%;">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="" style="width:80%;" disabled=false>
               </div>
             </div>
             <div class="form-group">
@@ -117,6 +120,21 @@
   
 </div> 
  <script type="text/javascript">
+
+    //查看每一个case是否可以编译
+    window.onload=function(){
+      var examples = $(".example_case_parent");
+      <% @example.each_with_index do|item,index| %>
+        <% if item.remark == "1" %>
+          examples[<%= index %>].setAttribute("style","background:#CCC;");
+          $(".edit_case",examples[<%=index%>]).attr("disabled","disabled");
+          $(".fill",examples[<%=index%>]).val("cancel_fill");
+          $(".example_case",examples[<%=index%>]).html("cancel");
+        <% end %>
+      <% end %>
+    }
+
+
     $("document").ready(function(){
     $(".edit_case").click(function(){
       var key = $(this).attr("data");
@@ -156,23 +174,71 @@
       //   $("#example_id").val(data.example_id);
       // });
     });
+
+
     $(".example_case").click(function(){
+      var key = $(this).attr("data");
+      var select_dom = this;
+
       if($(this).val()==="fill"){
-        $(this).parents('.example_case_parent').css("background","#00CCFF");
+        $(this).parents('.example_case_parent').css("background","#CCC");
+        $(".edit_case",$($(this).parent())).attr("disabled","disabled");
         $(this).val("cancel_fill");
-        $(this).html("取消填充");
-        var key = $(this).attr("data");
+        $(this).html("cancel");
+        var get_info_url = "/examples/"+ key +"/cancel_edit"; 
+        $.get(get_info_url, function(data){
+         console.log(data);
+         $(".example_top_8",$(select_dom).parent().parent())[0].innerHTML=data.remark;
+        });
+
+        
       }
       else{
-        $(this).parents('.example_case_parent').css("background","");
-        $(this).val("fill");
-        $(this).html("填充颜色");
+        if($(this).attr("data_key")==="odd"){
+          $(this).parents('.example_case_parent').css("background","#CCFFFF");
+          $(".edit_case",$($(this).parent())).attr("disabled",false);
+          $(this).val("fill");
+          $(this).html("color");
+         // console.log(select_dom);
+          var get_info_url = "/examples/"+ key +"/able_edit"; 
+          $.get(get_info_url, function(data){
+            console.log(data);
+            $(".example_top_8",$(select_dom).parent().parent())[0];
+            $(".example_top_8",$(select_dom).parent().parent())[0].innerHTML=data.remark;
+          });
+        }
+        else{
+          $(this).parents('.example_case_parent').css("background","white");
+          $(".edit_case",$($(this).parent())).attr("disabled",false);
+          $(this).val("fill");
+          $(this).html("color");
+          var get_info_url = "/examples/"+ key +"/able_edit"; 
+          $.get(get_info_url, function(data){
+            console.log(data);
+            $(".example_top_8",$(select_dom).parent().parent())[0].innerHTML=data.remark;
+          });
+        }
       }
       
      
     });
+
+    //添加奇偶选择器
+    $("tr:odd").css("background","#CCFFFF");
+    $("tr:odd .example_case").attr("data_key","odd");
+    $("tr:even .example_case").attr("data_key","even");
+
   });
+
+   function cancel_example_edit(){
+    $(this).parents('.example_case_parent').css("background","#CCC");
+    $(".edit_case",$($(this).parent())).attr("disabled","disabled");
+    $(this).val("cancel_fill");
+    $(this).html("cancel");
+   } 
   </script>
+
+<% end %>
 
 
 
