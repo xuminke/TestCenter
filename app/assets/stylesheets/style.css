@@ -247,3 +247,35 @@
   margin-left: -20px;
   border-bottom-style: none;
 }
+#varsion_content{
+  border:1px solid #CCC;
+  border-bottom-style: none;
+  margin-top: 10px;
+  height: 400px;
+}
+#update_version{
+  border:1px solid #CCC;
+  height:200px;
+  width:370px;
+  position: absolute;
+  top:250px;
+  left:250px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif !important;
+  background-color: white;
+  display: none;
+}
+#update_version_top{
+  border:1px solid #CCC;
+  height:30px;
+  width:370px;
+  background-color: #3399FF;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+}
+#update_version_top label{
+  margin-left: 10px;
+  margin-top: 3px;
+  font-size: 1.1em;
+}

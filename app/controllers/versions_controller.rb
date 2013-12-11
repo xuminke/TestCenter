@@ -3,19 +3,8 @@ class VersionsController < ActionController::Base
   
   
   def index
-    # @versions = {}
-    # items = Version.find(:all)
-    # items.each do |obj|
-    #   if(@versions[obj.work_year])
-    #     @versions[obj.work_year] << obj.identifer
-    #   else
-    #     @versions[obj.work_year] = [obj.identifer]
-    #   end
-    # end
-    @versions = Version.find(:all)
+    @versions = Version.paginate(:page=>params[:page],:per_page=>14)
     @groups_all = Group.find(:all)
-    p @versions
-    p "***************************************"
   end
 
   def new
@@ -27,5 +16,31 @@ class VersionsController < ActionController::Base
     version = Version.new(params[:version])
     version.save
     redirect_to :action=>"new"
+  end
+
+  def update_version
+    version = Version.find_by_id(params[:id])
+    version.work_year = params[:work_year]
+    version.identifer = params[:identifer]
+    version.save
+    redirect_to :action=>"index"
+  end
+
+  def get_info
+    @rsc = Version.find(params[:id])
+    render :json=>{
+      :work_year => @rsc.work_year,
+      :identifer => @rsc.identifer
+    }
+  end
+
+  def create_version
+    version = Version.new()
+    work_year = params[:work_year]
+    identifer = params[:identifer]
+    version.work_year = work_year
+    version.identifer = identifer
+    version.save
+    redirect_to :back
   end
 end

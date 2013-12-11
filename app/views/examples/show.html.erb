@@ -37,8 +37,9 @@
         <td class="example_top_9"><%= example.again_implement_time %></td>
         <td class="example_top_10"><%= example.again_implement_people %></td>
         <td class="example_top_11"><button data-toggle="modal" class="edit_case" data-target="#myModal" width="30px" data="<%= example.id%>">edit</button>
-        <button class="example_case" value="fill" data="<%= example.id%>" style="width:60px;">color</button>
-        </td>
+        <button class="example_case" value="fill" data="<%= example.id%>" style="width:50px;">color</button>
+        <button class="delete_case" data="<%= example.id%>" style="width:50px;">delete</button> 
+        </td> 
       </tr>
 	  <% end %>
 	</table>    
@@ -154,25 +155,20 @@
         $("#example_id").val(data.example_id);
       });
     });
+
+    //delete case
+    $(".delete_case").click(function(){
+      alert("ll")
+      var key = $(this).attr("data");
+      var get_info_url = "/examples/"+ key +"/delete_case";
+      $.get(get_info_url, function(data){
+        console.log(data)
+
+      });
+    })
+
     $(".set_default").click(function(){
       $("#edit_form").attr("action","/examples/set_default");
-      // var key = "<%= @test_file_id %>";
-      // var get_info_url = "/examples/"+ key +"/set_default";
-      // $.get(get_info_url, function(data){
-      //   console.log(data);
-      //   console.log(data.status);
-      //   console.log(data.affirm);
-      //   console.log(data.example_id);
-      //   $("#status").val(data.status);
-      //   $("#affirm").val(data.affirm);
-      //   $("#result").val(data.result);
-      //   $("#implement_time").val(data.implement_time);
-      //   $("#implement_people").val(data.implement_people);
-      //   $("#remark").val(data.remark);
-      //   $("#again_implement_time").val(data.again_implement_time);
-      //   $("#again_implement_people").val(data.again_implement_people);
-      //   $("#example_id").val(data.example_id);
-      // });
     });
 
 
