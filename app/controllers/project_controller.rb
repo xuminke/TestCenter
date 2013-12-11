@@ -23,7 +23,7 @@ class ProjectController < ApplicationController
         @identifer[obj.work_year] = [obj.identifer]
       end
     end
-    @work_year = @work_year.uniq!
+    @work_year.uniq!
   end
   
   #add new method
@@ -89,7 +89,7 @@ class ProjectController < ApplicationController
         @identifer[obj.work_year] = [obj.identifer]
       end
     end
-    @work_year = @work_year.uniq!
+    @work_year.uniq!
   end
 
   def project_search
@@ -110,7 +110,7 @@ class ProjectController < ApplicationController
         @identifer[obj.work_year] = [obj.identifer]
       end
     end
-    @work_year = @work_year.uniq!    
+    @work_year.uniq!
   end
 
   #update project
