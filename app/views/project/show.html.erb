@@ -25,7 +25,7 @@
           <table>
           <tr>
             <td>
-              <%= file_field_tag "attachment", :accept => 'application/msexcel'%>
+              <%= file_field_tag "attachment", :accept => 'application/vnd.ms-excel'%>
               <input type="hidden" name="project_id" value="<%= @project.id %>">
             </td>
             <td><%= submit_tag "UpLoad", :id=>"upload_file", :onclick=>"valid_file(); return false; "%></td>
@@ -35,31 +35,26 @@
       <% end %>
       </div>
     </div>
-    <table class="table">
-      <tr>
-        <th>文件名</th>
-        <th>操作</th>
-      </tr>
-      <tr>
-        <td>上传文件1</td>
-        <td>
-          <button>download</button>
-        </td>
-      </tr>
-      <tr>
-        <td>上传文件2</td>
-        <td>
-          <button>download</button>
-        </td>
-      </tr>
-      <tr>
-        <td>上传文件3</td>
-        <td>
-          <button>download</button>
-        </td>
-      </tr>
-    </table>
-    
+    <% if(@attachment_all.length>0) %>
+      <div id="attachment_all">
+        <table class="table">
+          <tr>
+            <th>编号</th>
+            <th>文件名</th>
+            <th>操作</th>
+          </tr>
+          <% @attachment_all.each_with_index do |item,index| %>
+            <tr>
+              <td><%= index+1 %></td>
+              <td><%= item.file_name %></td>
+              <td>
+                <button class="download" data="<%= item.id %>">download</button>
+              </td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    <% end %>   
 </div>
 
 <div id="test_file_new_id">
@@ -124,6 +119,11 @@
     $(".cancel").click(function(){
     	$("#test_file_update_id").css("display","none");
     });
+    $(".download").click(function(){
+      var key=$(this).attr("data");
+      window.location.href = "/attachments/download?attachment_id="+key;
+
+    })
   });
 
   function valid_file(){

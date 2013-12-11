@@ -1,8 +1,8 @@
 class ExamplesController < ApplicationController
+  layout 'example'
   def show
     @example = Example.find_all_by_test_file_id(params[:test_file_id])
     @test_file_id = params[:test_file_id]
-    p @example
     example_case = []
     @example.each do |example|
       str = example.content
@@ -22,8 +22,8 @@ class ExamplesController < ApplicationController
         arr << e
       end
       end
-    end
-    
+
+    end   
     @arr={}
     divisor = []
     arr.each do |arr|
@@ -88,6 +88,27 @@ class ExamplesController < ApplicationController
             :again_implement_time =>@rsc.again_implement_time,
             :again_implement_people =>@rsc.again_implement_people
           }
+  end
+  
+
+  def cancel_edit
+    key = params[:id]
+    example = Example.find(key)
+    example.remark="1"
+    example.save!
+    render :json=>{
+      :remark=>example.remark
+    }
+  end
+
+  def able_edit
+    key = params[:id]
+    example = Example.find(key)
+    example.remark="0"
+    example.save!
+    render :json=>{
+      :remark=>example.remark
+    }
   end
 
 end

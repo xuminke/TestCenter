@@ -34,6 +34,12 @@ TestCenter::Application.routes.draw do
       get 'get_info'
     end 
   end
+    resources :examples do
+    member do
+      get 'cancel_edit'
+      get 'able_edit'
+    end 
+  end
   # resources :test_file
   # resources :factor
   # resources :divisor
@@ -89,7 +95,7 @@ TestCenter::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-   root :to => 'versions#index'
+   root :to => 'project#index'
 
   # See how all your routes lay out with "rake routes"
 
