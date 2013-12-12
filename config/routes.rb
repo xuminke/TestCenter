@@ -4,6 +4,7 @@ TestCenter::Application.routes.draw do
     member do
       get 'get_info'
       post 'edit_case'
+      get 'delete_case'
     end
     collection do
       post 'set_default'
@@ -34,10 +35,19 @@ TestCenter::Application.routes.draw do
       get 'get_info'
     end 
   end
-    resources :examples do
+  resources :examples do
     member do
       get 'cancel_edit'
       get 'able_edit'
+    end 
+  end
+
+  resources :versions do
+    member do
+      get 'index'
+      get 'get_info'
+      post 'update_version'
+      post 'create_version'
     end 
   end
   # resources :test_file
