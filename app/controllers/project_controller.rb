@@ -35,12 +35,8 @@ class ProjectController < ApplicationController
 
   def create
     @project = Project.new(params[:project])
-    p @project
-    p "9999999999999999999999999999999999999999999999999999"
     #group = Group.find(:first, :conditions=>{:group_name=>"#{params[:project][:group_id]}"})  
     @project.group_id = params[:group_id]
-    p @project.group_id
-    p "9999999999999999999999999999999999999999999999999999"
     @project.save
     id = @project.id
     redirect_to :back
@@ -135,5 +131,44 @@ class ProjectController < ApplicationController
       :project_name => @rsc.project_name,
       :description => @rsc.description
     }
+  end
+
+  def diagram
+    @project = Project.find(params[:id])
+    test_files = @project.test_files
+    @files_count  = test_files.size
+    test_cases = []
+    @diagram_data = {}
+    @diagram_data[:file_data] = []
+    total_count = 0
+    total_ok_count = 0
+    total_ng_count = 0
+    total_ng_ok_count = 0
+    #get every test file's data
+    test_files.each do|test_file|
+      case_count = 0
+      ok_count = 0
+      ng_count = 0
+      ng_ok_count = 0
+      case_count = test_file.get_test_case_count
+      ok_count = test_file.get_ok_count
+      ng_count = test_file.get_ng_count
+      ng_ok_count = test_file.get_ng_ok_count
+      file_data = {:file_name=>test_file.test_file_name,
+                   :case_count=>case_count,
+                   :ok_count=>ok_count,
+                   :ng_count=>ng_count,
+                   :ng_ok_count=>ng_ok_count}
+      total_count += case_count
+      total_ok_count += ok_count
+      total_ng_count += ng_count
+      total_ng_ok_count += ng_ok_count
+      @diagram_data[:file_data] << file_data
+    end
+    @diagram_data[:total_count] = total_count
+    @diagram_data[:total_ok_count] = total_ok_count
+    @diagram_data[:total_ng_count] = total_ng_count
+    @diagram_data[:total_ng_ok_count] = total_ng_ok_count
+    p @diagram_data
   end
 end

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter  :get_group
+  helper :all
 
 
   # def get_version
@@ -17,7 +18,5 @@ class ApplicationController < ActionController::Base
 
   def get_group
     @groups_all = Group.find(:all)
-    p @groups_all
-    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
   end
 end

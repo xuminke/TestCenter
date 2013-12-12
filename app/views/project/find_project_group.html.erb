@@ -25,10 +25,10 @@
     <table class="table">
       <% @project.each do |project| %>
         <tr>
-          <td><%= project.project_name %></td>
-          <td><%= link_to 'Show', "/project/show/#{project.id}" %></td>
+          <td width="70%"><a href="/project/show/<%=project.id%>"><%= project.project_name %></a></td>
+          <td><%= link_to 'Diagram', "/project/diagram/#{project.id}"%></td>
           <td><%= link_to 'Update', "#", :class=>"update_project", :data=>project.id %></td>
-          <td><%= link_to 'Destroy', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
+          <td><%= link_to 'Delete', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
         </tr>     
       <% end %>
     </table>    
