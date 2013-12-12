@@ -22,18 +22,17 @@
     <section id="pagetop">
       <div id="siteinfo">Resource Orchestrator Test</div>
       <div id="siteinfo_right">
-        <a href="/versions/index">首页</a>
+        <a href="/project/index">首页</a>
         <a href="javascript:history.go(-1)">返回</a>
-        <a id="dLabel" role="button" data-toggle="dropdown" data-target="dropdown-menu" href="/page.html">
-          管理 <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-          <li>4</li>
-        </ul>
-        <a href="#"></a>
+        <a href="#" class="manager_a">管理<span class="caret"></span></a>
+        <div id="siteinfo_right_dropdown">
+          <ul class="siteinfo_right_dropdown_ul">
+            <li class="siteinfo_right_dropdown_li"><a href="/versions/index" style="color:black;">版本管理</a></li>
+            <li class="siteinfo_right_dropdown_li"><a href="/groups/index" style="color:black;">组管理</a></li>
+            <li class="siteinfo_right_dropdown_li"><a href="#" style="color:black;">用户管理</a></li>
+          </ul>
+        </div>                  
+        
       </div>
     </section>
   </div>
@@ -71,6 +70,7 @@
 <%= yield :js %>
 <script type="text/javascript">
   $("document").ready(function(){
+    var timer;
     $(".contents-left-bottom-ul-li h4").click(function(){
       var dom = $(".contents-left-bottom-ul-item", $(this).parent());
       dom.fadeToggle(0);
@@ -80,6 +80,24 @@
     }).mouseout(function(){
       $(this).css("background","");
     });
-    $(".contents-left-bottom-ul-item-xx a") 
+    $(".manager_a").click(function(){
+      $("#siteinfo_right_dropdown").css("display","block");
+      $(".siteinfo_right_dropdown_ul li").click(function(){
+        $("#siteinfo_right_dropdown").css("display","none");
+      })
+    })
+    $(".siteinfo_right_dropdown_li").mouseover(function(){
+      $(this).css("background","#CCC");
+    }).mouseout(function(){
+      $(this).css("background","");
+    })
+    $("#siteinfo_right_dropdown").mouseout(function(){
+      timer = setTimeout(function(){
+        $("#siteinfo_right_dropdown").css("display","none");
+      },200);      
+    });
+    $(".siteinfo_right_dropdown_ul").mouseover(function(){
+      clearTimeout(timer);
+    })
   });
 </script>

@@ -155,6 +155,7 @@ class ProjectController < ApplicationController
       ng_count = test_file.get_ng_count
       ng_ok_count = test_file.get_ng_ok_count
       file_data = {:file_name=>test_file.test_file_name,
+                   :file_id=>test_file.id,
                    :case_count=>case_count,
                    :ok_count=>ok_count,
                    :ng_count=>ng_count,

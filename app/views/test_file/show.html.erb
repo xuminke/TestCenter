@@ -71,7 +71,6 @@
         }		
     }
     var xx=encodeArray2D(data_case)
-    alert(xx)
     window.location.href = "/rule/create?test_file=<%= @test_file.id %>&data="+xx   
     });
 
@@ -149,7 +148,6 @@
         val = all_div[i].getAttribute("value");
         right_div_value.push(val);
       }
-      alert(right_div_value);
       $("#destroy_divisor").css("display","none");
       window.location.href="/divisor/destroy?divisor_arr="+right_div_value;
     })

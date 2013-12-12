@@ -111,4 +111,13 @@ class ExamplesController < ApplicationController
     }
   end
 
+  def delete_case
+    example_id = params[:id]
+    example = Example.find(example_id)
+    example.delete
+    render :json=>{
+      :example_case=>""
+    }
+  end
+
 end

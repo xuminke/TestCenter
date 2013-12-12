@@ -1,15 +1,19 @@
 /*userd for dargram view page*/
 .diagram_div {
   text-align: center;
-  width: 97%;
+  width: 102%;
   display: block;
-  margin-top: 50px;
+  margin-top: 10px;
+  margin-left: -20px;
 }
 
 .diagram_table {
   text-align: left;
-  width: 40%;
+  width: 90%;
+  height: 300px;
   display: block;
+  margin: 0 auto;
+  overflow: auto;
 }
 
 .diagram_table_total_count {
