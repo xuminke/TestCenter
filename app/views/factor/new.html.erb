@@ -3,12 +3,10 @@
 	<%= form_for (@factor), url: {action: "create"} do |f| %>
     <table>
     	<tr>
-    		<td>要因名</td>
+    		<td>要因名:</td>
     		<td><%= f.text_field :factor_name%></td>
-    	</tr>
-    	<tr>
-    		<td><input type="hidden" name="test_file_id" value="<%= @factor.test_file_id %>"></td>
-    		<td><%= f.submit '提交' %></td>
+            <td><input type="hidden" name="test_file_id" value="<%= @factor.test_file_id %>"></td>
+            <td><%= f.submit '提交' %></td>
     	</tr>
     </table>
 	<% end %>

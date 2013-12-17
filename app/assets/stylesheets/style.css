@@ -75,8 +75,8 @@
   background-color: white;
 }
 .test_file_show{
-  font-size: 1.3em;
-  color: green;
+  font-size: 1.2em;
+  color: #2a6496;
   margin-top: 15px;
 }
 .test_file_show label{
@@ -279,6 +279,19 @@
   margin-top: 3px;
   font-size: 1.1em;
 }
+#factor_divisor{
+  border:1px solid #CCC;
+  height:200px;
+  width:370px;
+  position: absolute;
+  top:250px;
+  left:250px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif !important;
+  background-color: white;
+  display: none;
+}
 #group_index{
   margin-top: 10px;
   margin-left: -20px;
@@ -323,4 +336,17 @@
   padding-top: 10px;
   border-top-left-radius:3px;
   border-top-right-radius:3px;
+}
+#factor_form{
+  border:1px solid #ffffff;
+  width: 102%;
+  height:40px;
+  background-color: white;
+  margin-top: 3px;
+  margin-left: -20px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px;
+}
+#factor_divisor{
+  height: 160px;
 }

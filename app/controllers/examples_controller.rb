@@ -120,4 +120,9 @@ class ExamplesController < ApplicationController
     }
   end
 
+  def save_example
+    put "ppapappapappappapqpqppqpprpdpfpsdafpdspfpdsfdasffaj"
+    redirect_to :back
+  end
+
 end

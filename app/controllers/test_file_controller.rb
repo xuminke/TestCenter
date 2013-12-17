@@ -34,6 +34,7 @@ class TestFileController < ApplicationController
 		@test_file = TestFile.find(params[:id])
 		project = Project.find_by_id(@test_file.project_id)
 		@project_name = project.project_name;
+    @project_id = project.id
 		@factor= Factor.find(:all, :conditions=>{:test_file_id=>"#{@test_file.id}"})
 	end
 

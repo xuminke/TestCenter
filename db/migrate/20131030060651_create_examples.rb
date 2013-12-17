@@ -7,7 +7,7 @@ class CreateExamples < ActiveRecord::Migration
       t.string :result
       t.date :implement_time
       t.string :implement_people
-      t.string :remark
+      t.string :remark :default=>"0"
       t.date :again_implement_time
       t.string :again_implement_people
       t.integer :test_file_id

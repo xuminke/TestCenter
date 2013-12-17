@@ -8,7 +8,9 @@ class FactorController < ApplicationController
 
   def create
   	@factor = Factor.new(params[:factor])
-    @factor.test_file_id=params[:test_file_id]
+   #  @factor.test_file_id=params[:test_file_id]
+    @factor.factor_name = params[:factor_divistor_name]
+    @factor.test_file_id = params[:test_file_or_factor]
   	@factor.save
   	redirect_to :controller=>"test_file", :action=>"show", :id=>"#{@factor.test_file_id}"
   end

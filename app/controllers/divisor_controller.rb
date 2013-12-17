@@ -10,11 +10,12 @@ class DivisorController < ApplicationController
 	end
 
 	def create
-    @divisor = Divisor.new(params[:divisor])
-    @divisor.factor_id= params[:factor_id]
+    @divisor = Divisor.new()
+    @divisor.divisor_name = params[:factor_divistor_name]
+    @divisor.factor_id = params[:test_file_or_factor]
 		@divisor.save
-		factor = Factor.find(params[:factor_id])
-		redirect_to :controller=>"test_file", :action=>"show", :id=>"#{factor.test_file_id}"
+		# factor = Factor.find(params[:factor_id])
+		redirect_to :back
 	end
 
 	def destroy

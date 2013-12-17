@@ -51,6 +51,15 @@ TestCenter::Application.routes.draw do
     end 
   end
 
+  resources :users do
+    member do
+      get 'index'
+      get 'get_info'
+      post 'update_user'
+      post 'create_user'
+    end 
+  end
+
   resources :groups do
     member do
       get 'index'
