@@ -39,6 +39,9 @@ class ProjectController < ApplicationController
     @project.group_id = params[:group_id]
     @project.save
     id = @project.id
+    project_name = @project.project_name
+    #在public目录下新建相应的文件夹
+    Dir.mkdir("#{Rails.root}/public/attachment_file/#{project_name}_#{id}")
     redirect_to :back
   end
 
@@ -51,7 +54,7 @@ class ProjectController < ApplicationController
   def destroy
     project = Project.find(params[:id])
     project.destroy
-    redirect_to :action=>"index"
+    redirect_to :back
   end
 
   def get_identifer

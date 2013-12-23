@@ -23,7 +23,8 @@ class TestFileController < ApplicationController
 	  else
       project.test_file_id +=(","+(@test_file.id).to_s)
 	  end
-		
+    #在public相应的作业目录下创建相应的作业文件夹
+		Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}")
 		project.save
 		id = @test_file.id
 		redirect_to :controller=>"project" ,:action=>"show", :id=>@test_file.project_id
