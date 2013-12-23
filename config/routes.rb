@@ -15,6 +15,7 @@ TestCenter::Application.routes.draw do
   get "project/get_project"
   get "project/find_project_group"
   get "attachments/upload"
+  get "test_file/download_testfile"
   resources :project do
     member do
       get 'get_info'

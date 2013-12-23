@@ -53,7 +53,12 @@ class ProjectController < ApplicationController
 
   def destroy
     project = Project.find(params[:id])
-    project.destroy
+    test_file = TestFile.find(:all, :conditions=>{:project_id=>"#{project.id}"})
+    project.destroy  
+    test_file.each do |item|
+      Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{item.test_file_name}_#{item.id}")
+    end
+      Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}")
     redirect_to :back
   end
 
