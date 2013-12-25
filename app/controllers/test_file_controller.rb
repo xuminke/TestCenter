@@ -44,8 +44,8 @@ class TestFileController < ApplicationController
     test_file = TestFile.find(params[:id])
     project = Project.find_by_id(test_file.project_id)
     test_file.destroy
-    Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}")
-    Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/test_file")
+    File.directory?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}")
+    File.directory?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file")
     redirect_to :back
 	end
 
@@ -113,6 +113,7 @@ class TestFileController < ApplicationController
       f.write(aa)
     end
     send_file "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file/#{test_file.test_file_name}.html"
+    # send_file "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/screenshot"
   end
   
 end

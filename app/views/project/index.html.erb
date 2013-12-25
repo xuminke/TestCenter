@@ -3,12 +3,13 @@
   <span class="project_index_top_span">所有作业列表</span>
 </div>
 <div id="project_index_content">
-  <table class="table table-bordered">
+  <table class="table">
 	  <% @project.each do |project| %>
       <tr>
-      	<td><%= project.project_name %></td>
+      	<td><a href="/project/show/<%= project.id %>"><%= project.project_name %></a></td>
       	<td><%= link_to 'Show', "/project/show/#{project.id}" %></td>
       	<td><%= link_to 'Destroy', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
+        <td><%= link_to 'Download', "/project/download/#{project.id}"%></td>
       </tr>     
 	  <% end %>
   </table>

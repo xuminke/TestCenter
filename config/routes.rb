@@ -1,10 +1,10 @@
 TestCenter::Application.routes.draw do
-
+  
+  get "examples/delete_case"
   resources :examples do
     member do
       get 'get_info'
       post 'edit_case'
-      get 'delete_case'
       post 'upload_img'
     end
     collection do
@@ -17,6 +17,7 @@ TestCenter::Application.routes.draw do
   get "project/find_project_group"
   get "attachments/upload"
   get "test_file/download_testfile"
+
   resources :project do
     member do
       get 'get_info'

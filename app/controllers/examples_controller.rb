@@ -2,7 +2,7 @@ class ExamplesController < ApplicationController
   layout 'home_index'
   def show
     @example = Example.find_all_by_test_file_id(params[:test_file_id])
-    @test_file_id = params[:test_file_id]
+    @test_file_id = params[:test_file_id]    
     example_case = []
     @example.each do |example|
       str = example.content
@@ -112,12 +112,13 @@ class ExamplesController < ApplicationController
   end
 
   def delete_case
-    example_id = params[:id]
+    example_id = params[:example_id]
+    # position = params[:table_position]
     example = Example.find(example_id)
+    # test_file_id = example.test_file_id
     example.delete
-    render :json=>{
-      :example_case=>""
-    }
+    # redirect_to :action=>'show', :id=>example_id, :test_file_id=>test_file_id, :position_table=>position
+    redirect_to :back
   end
 
   def save_example

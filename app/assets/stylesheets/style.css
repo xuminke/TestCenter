@@ -1,7 +1,7 @@
 /*project css  */
 
 /*project index css  */
-#new_project_id{
+/*#new_project_id{
   border:1px solid #3399FF; 
   width:320px; 
   height:190px;
@@ -10,14 +10,14 @@
   left:300px;
   display:none;
   border-radius:5px;
-}
-#new_project_dialog{
+}*/
+/*#new_project_dialog{
   width:320px;
   height:30px;
   background:#3399FF;
   border-top-left-radius:5px;
   border-top-right-radius:5px;
-}
+}*/
 #test_file_new_id{
   border:1px solid #3399ff;
   width:355px;
@@ -349,4 +349,11 @@
 }
 #factor_divisor{
   height: 160px;
+}
+#create_case{
+  width:100%;
+  margin:0 auto;
+  margin-top: 0px;
+  overflow-y: auto;
+  overflow-x: auto;
 }

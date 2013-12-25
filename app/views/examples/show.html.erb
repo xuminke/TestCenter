@@ -1,23 +1,33 @@
 <% content_for :content_right do %>
 <div id="content">
+<!-- <div id="content_top">
+  <ul >
+    <li style="width:47px;border-left-style:solid;"></li>
+    <li style="width:236px;">内容</li>
+    <li style="width:93px;">正常/异常</li>
+    <li style="width:177px;">确认内容</li>
+    <li style="width:81px;">测试结果</li>
+    <li style="width:64px;">实施日</li>
+    <li style="width:64px;">实施者</li>
+    <li style="width:84px;">再实施日</li>
+    <li style="width:83px;">再实施者</li>
+    <li style="width:118px;"><button  data-toggle="modal" data-target="#myModal" class="set_default btn-info" style="width:103px;">set default</button></li>
+  </ul>
+</div> -->
+<div id="example_top">
+  <div class="example_top_1">编号</div>
+  <div class="example_top_2">内容</div>
+  <div class="example_top_3">正常/异常</div>
+  <div class="example_top_4">确认内容</div>
+  <div class="example_top_5">测试结果</div>
+  <div class="example_top_6">实施日</div>
+  <div class="example_top_7">实施者</div>
+  <div class="example_top_9">再实施日</div>
+  <div class="example_top_10">再实施者</div>
+  <div class="example_top_11"><button  data-toggle="modal" data-target="#myModal" class="set_default btn-info" style="width:103px;">set default</button></div>
+</div>
 <div id="example_table">
-<table class="table table-bordered table-condensed table-hover">
-  <thead>
-    <tr>
-      <th class="example_top_1"></th>
-      <th class="example_top_2">内容</th>
-      <th class="example_top_3">正常/异常</th>
-      <th class="example_top_4">确认内容</th>
-      <th class="example_top_5">测试结果</th>
-      <th class="example_top_6">实施日</th>
-      <th class="example_top_7">实施者</th>
-      <th class="example_top_9">再实施日</th>
-      <th class="example_top_10">再实施者</th>
-      <th class="example_top_11">
-        <button  data-toggle="modal" data-target="#myModal" class="set_default btn-info" width="30px">set default</button>
-      </th>
-    </tr>
-  </thead>
+<table valign="middle">
   <tbody>
 	  <% @example.each_with_index do |example,index| %>
       <tr class="example_case_parent" style="<%="background:#ccc" if example.remark == 1%>">
@@ -40,10 +50,10 @@
         <td class="example_top_9"><%= example.again_implement_time %></td>
         <td class="example_top_10"><%= example.again_implement_people %></td>
         <td class="example_top_11">
-          <button data-toggle="modal" class="btn-info edit_case" data-target="#myModal" width="50px" data="<%= example.id%>">edit</button>
+          <button data-toggle="modal" class="btn-info edit_case" data-target="#myModal" style="width:50px;" data="<%= example.id%>">edit</button>
           <button class="example_case btn-info" value="fill" data="<%= example.id%>" style="width:50px;">color</button>
-          <button class="btn-info upload_img" data="<%= example.id%>" style="width:50px;">img</button>
-          <button class="delete_case btn-danger" data="<%= example.id%>" style="width:50px;">delete</button>
+          <button class="btn-info upload_img" data="<%= example.id%>" style="width:50px;margin-top:3px;">img</button>
+          <button class="delete_case btn-danger" data="<%= example.id%>" style="width:50px;margin-top:3px;" onclick="confirm(Are you sure)">delete</button>
         </td> 
       </tr>
 	  <% end %>
@@ -136,8 +146,9 @@
 </div> 
  <script type="text/javascript">
 
-    //查看每一个case是否可以编译
+    
     window.onload=function(){
+      //查看每一个case是否可以编译
       var examples = $(".example_case_parent");
       <% @example.each_with_index do|item,index| %>
         <% if item.remark == "1" %>
@@ -147,6 +158,12 @@
           $(".example_case",examples[<%=index%>]).html("cancel");
         <% end %>
       <% end %>
+      //获得滚动条的位置
+      var position = localStorage.getItem("position_table")
+      var table_position = document.getElementById("example_table");
+      document.getElementById("example_table").scrollTop=position;
+      localStorage.setItem("position_table",0);
+
     }
 
 
@@ -167,13 +184,41 @@
         $("#example_id").val(data.example_id);
       });
     });
+    //给每列加一个鼠标滑过事件
+    // $(".example_case_parent").mouseover(function(){
+    //   var backg = $(this).attr("background")
+    //   $(this).css("background","#99CCFF");
+    // }).mouseout(function(){
+    //   alert(($(".example_case"),this).val())
+    //   // if($(this,$(".example_case").val())=="cancel"){
+    //   //   $(this).css("background","#CCC");
+    //   // }
+    //   // else{
+    //   //   $(this).css("background","");
+    //   // }
+    // })
 
     //delete case
     $(".delete_case").click(function(){
-      var key = $(this).attr("data");
-      var get_info_url = "/examples/"+ key +"/delete_case";
-      $.get(get_info_url, function(data){
-      });
+      if(confirm("Are you sure")){
+        var table_position = document.getElementById("example_table");
+        var xx = table_position.scrollTop;
+        var key = $(this).attr("data");
+        localStorage.setItem('position_table',xx);
+        // var xxx = localStorage.getItem('position_table')
+        // console.log(xxx)
+        window.location.href = "/examples/delete_case?example_id="+key
+      }
+      else{
+        return false;
+      }
+      // window.location.href = "/examples/delete_case?example_id="+key+"&table_position="+xx+"&test_file_id="+<%= @test_file_id %>
+      // var get_info_url = "/examples/"+ key +"/delete_case";
+      // $.get(get_info_url, function(data){
+      //   history.go(0); 
+      //   table_position.scrollTop = xx      
+      // });
+      
     })
 
     $(".set_default").click(function(){
@@ -188,6 +233,7 @@
       if($(this).val()==="fill"){
         $(this).parents('.example_case_parent').css("background","#CCC");
         $(".edit_case",$($(this).parent())).attr("disabled","disabled");
+        $(".edit_case",$($(this).parent())).attr("style","background:#CCC;width:50px;");
         $(this).val("cancel_fill");
         $(this).html("cancel");
         var get_info_url = "/examples/"+ key +"/cancel_edit"; 
@@ -198,8 +244,9 @@
       }
       else{
         if($(this).attr("data_key")==="odd"){
-          $(this).parents('.example_case_parent').css("background","#CCFFFF");
+          $(this).parents('.example_case_parent').css("background","");
           $(".edit_case",$($(this).parent())).attr("disabled",false);
+          $(".edit_case",$($(this).parent())).attr("style","width:50px;");
           $(this).val("fill");
           $(this).html("color");
          // console.log(select_dom);
@@ -208,8 +255,9 @@
           });
         }
         else{
-          $(this).parents('.example_case_parent').css("background","white");
+          $(this).parents('.example_case_parent').css("background","");
           $(".edit_case",$($(this).parent())).attr("disabled",false);
+          $(".edit_case",$($(this).parent())).attr("style","width:50px;");
           $(this).val("fill");
           $(this).html("color");
           var get_info_url = "/examples/"+ key +"/able_edit"; 

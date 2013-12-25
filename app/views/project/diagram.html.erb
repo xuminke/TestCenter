@@ -5,7 +5,7 @@
 
 <% content_for :content_right do %>
   <div id="project_index_top">
-    <span class="project_index_top_span"><%= @project.project_name%><span style="color:green;font-weight: bold;">&nbsp;&nbsp;-->&nbsp;&nbsp;</span>Summary</span>
+    <span class="project_index_top_span"><a href="/project/show/<%= @project.id%>"><%= @project.project_name%></a><span style="color:green;font-weight: bold;">&nbsp;&nbsp;-->&nbsp;&nbsp;</span>Summary</span>
   </div> 
 <% total_complete_count = @diagram_data[:total_ok_count] + @diagram_data[:total_ng_count] +@diagram_data[:total_ng_ok_count]%>
   <div class="well well-large diagram_div">
