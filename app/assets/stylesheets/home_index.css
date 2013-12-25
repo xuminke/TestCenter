@@ -43,7 +43,7 @@
    #contents{
     margin:0 auto;
     width: 99%;
-    height: 700px;
+    height: 100%;
     display: inline-block;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -65,8 +65,8 @@
    }
    #contents-right{
     border:1px solid #ccc;
-    width:78.5%;
-    height: 690px;
+    width:78%;
+    height: auto;
     position: absolute;
     top:44px;
     left:297px;

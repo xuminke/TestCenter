@@ -1,5 +1,5 @@
 class ExamplesController < ApplicationController
-  layout 'example'
+  layout 'home_index'
   def show
     @example = Example.find_all_by_test_file_id(params[:test_file_id])
     @test_file_id = params[:test_file_id]
@@ -121,8 +121,20 @@ class ExamplesController < ApplicationController
   end
 
   def save_example
-    put "ppapappapappappapqpqppqpprpdpfpsdafpdspfpdsfdasffaj"
     redirect_to :back
+  end
+
+  def upload_img
+    puts "*********************"
+    puts request.form_data?
+    puts request.content_length
+    puts request.body
+    File.open("#{Rails.root}/public/screen_shot/#{params[:id]}.png", "wb") do |f|
+      f.write(params[:upload_file].read)
+    end
+    render :json=>{
+      :example_case=>""
+    }
   end
 
 end

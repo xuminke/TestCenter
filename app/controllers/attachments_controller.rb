@@ -8,6 +8,12 @@ class AttachmentsController < ApplicationController
     @attachment.file_url = params[:attachment].tempfile.read
     @attachment.project_id = pro_id 
     @attachment.save
+    #======================
+    #Dir.mkdir("#{Rails.root}/public/screen_shot/#{pro_id}")
+    #File.open("#{Rails.root}/public/screen_shot/#{pro_id}/#{ff}", "wb") do |f|
+    #  f.write(params[:attachment].tempfile.read)
+    #end
+    #======================
     redirect_to :back
   end
 
