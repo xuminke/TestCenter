@@ -25,6 +25,7 @@ class TestFileController < ApplicationController
 	  end
     #在public相应的作业目录下创建相应的作业文件夹
 		Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}")
+    Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/test_file")
 		project.save
 		id = @test_file.id
 		redirect_to :controller=>"project" ,:action=>"show", :id=>@test_file.project_id
@@ -41,7 +42,10 @@ class TestFileController < ApplicationController
 
 	def destroy
     test_file = TestFile.find(params[:id])
+    project = Project.find_by_id(test_file.project_id)
     test_file.destroy
+    Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}")
+    Dir.rmdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/test_file")
     redirect_to :back
 	end
 
@@ -58,4 +62,57 @@ class TestFileController < ApplicationController
       :test_file_name => @rsc.test_file_name,     
     }
   end
+
+  #下载相应的测试文件
+  def download_testfile
+    #test_file = TestFile.find(params[:test_file_id])
+    @example = Example.find_all_by_test_file_id(params[:test_file_id])
+    @test_file_id = params[:test_file_id]
+    @test_file = TestFile.find(@test_file_id)
+    test_file = TestFile.find(@test_file_id)
+    project = Project.find(test_file.project_id)
+    p project
+    p "99999999999999999999999999999999999999999999999999999999999"
+    example_case = []
+    @example.each do |example|
+      str = example.content
+      str_s = str.split(",")
+      str_case = []
+      str_s.each do |str|
+        str_case << str.to_i
+      end
+      example_case << str_case      
+    end
+    arr = []
+    example_case.each do |example|
+      example.each do |e|
+       if(arr.include?(e))
+        next
+      else
+        arr << e
+      end
+      end
+
+    end   
+    @arr={}
+    divisor = []
+    arr.each do |arr|
+      divisor << Divisor.find_by_id(arr)
+    end
+
+    divisor.each do |d|
+      @arr["#{d.id}"] = "#{d.divisor_name}"
+    end
+    aa = render_to_string :layout=>nil
+    # Dir.delete("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file") 
+    # rescue Errno::ENOTEMPTY
+    #Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file")
+    FileUtils.cp("#{Rails.root}/public/test.html", "#{Rails.root}/public/test1.html") 
+    f = FileUtils.mv("#{Rails.root}/public/test1.html", "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file/#{test_file.test_file_name}.html") 
+    File.open("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file/#{test_file.test_file_name}.html","wb") do |f| 
+      f.write(aa)
+    end
+    send_file "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file/#{test_file.test_file_name}.html"
+  end
+  
 end

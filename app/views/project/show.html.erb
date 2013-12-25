@@ -9,7 +9,7 @@
 	  <% @test_file.each do |test_file| %>
 	  	<tr>
 	  		<td><%= test_file.test_file_name %></td>
-	  		<td><%= link_to '做成测试文件', :controller=>"test_file", :action=>"show", :id=>test_file.id %> |  <%= link_to '查看测试文件', :controller=>"examples", :action=>"show", :test_file_id=>test_file.id %> | <a href="#" class="update_test_file" data="<%= test_file.id %>">修改测试文件</a>  |  <%= link_to '删除测试文件', "/test_file/destroy/#{test_file.id}", :onclick => "return confirm('Are you sure?')" %></td>
+	  		<td><%= link_to '做成测试文件', :controller=>"test_file", :action=>"show", :id=>test_file.id %> |  <%= link_to '查看测试文件', :controller=>"examples", :action=>"show", :test_file_id=>test_file.id %> | <a href="#" class="update_test_file" data="<%= test_file.id %>">修改测试文件</a>  |  <%= link_to '删除测试文件', "/test_file/destroy/#{test_file.id}", :onclick => "return confirm('Are you sure?')" %> | <a href="#" class="download_testfile" data="<%= test_file.id %>">下载文件</a></td>
 	  	</tr>
 	  <% end %>
 	  </table>
@@ -124,6 +124,10 @@
       window.location.href = "/attachments/download?attachment_id="+key;
 
     })
+    $(".download_testfile").click(function(){
+      var key=$(this).attr("data");
+      window.location.href = "/test_file/download_testfile?test_file_id="+key;
+    });
   });
 
   function valid_file(){
