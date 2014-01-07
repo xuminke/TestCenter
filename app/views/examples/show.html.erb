@@ -42,7 +42,6 @@
         <td class="example_top_11">
           <button data-toggle="modal" class="btn-info edit_case" data-target="#myModal" width="50px" data="<%= example.id%>">edit</button>
           <button class="example_case btn-info" value="fill" data="<%= example.id%>" style="width:50px;">color</button>
-          <button class="btn-info upload_img" data="<%= example.id%>" style="width:50px;">img</button>
           <button class="delete_case btn-danger" data="<%= example.id%>" style="width:50px;">delete</button>
         </td> 
       </tr>
@@ -50,7 +49,7 @@
   </tbody>
 	</table>    
   </div> 
- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -58,81 +57,96 @@
         <h4 class="modal-title" id="myModalLabel">Edit Case</h4>
       </div>
       <div class="modal-body" style="height:600px;width:650px;">
-        <form method="post" id="edit_form" class="form-horizontal" role="form" multipart ="true">
-            <div class="form-group">
-              <label for="inputstatus" class="col-sm-2 control-label">正常/异常:</label>
-              <div class="col-sm-10"> 
-              <select class="form-control" style="width:80%;" id="status" name="status">
-                <option></option>
-                <option>正常</option>
-                <option>异常</option>
-              </select>
+        <div class="tabbable edit-tab">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab">Evidence</a></li>
+            <li><a href="#tab2" data-toggle="tab">General</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+            <form method="post" id="evidence_form" class="form-horizontal" role="form">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">img:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control screen_img" id="upload_img" name="upload_img" placeholder="">
+                  <div id="preview_img" class="preview_img">
+                  </div>
+                </div>
               </div>
+              <button type="submit" class="btn btn-primary" style="margin-left:107px;margin-top:10px;">Submit</button>
+              </form>
             </div>
-            <div class="form-group">
-              <label for="inputaffirm" class="col-sm-2 control-label" >确认内容:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="affirm" name="affirm" placeholder="" style="width:80%;"> 
-              </div>
+            <div class="tab-pane" id="tab2">
+              <form method="post" id="edit_form" class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="inputstatus" class="col-sm-2 control-label">正常/异常:</label>
+                  <div class="col-sm-10"> 
+                  <select class="form-control" style="width:80%;" id="status" name="status">
+                    <option></option>
+                    <option>正常</option>
+                    <option>异常</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputaffirm" class="col-sm-2 control-label" >确认内容:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="affirm" name="affirm" placeholder="" style="width:80%;"> 
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">测试结果:</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" style="width:80%;" id='result' name="result">
+                      <option></option>
+                      <option>OK</option>
+                      <option>NG</option>
+                      <option>NG-OK</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">实施日:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="implement_time" name="implement_time" placeholder="" style="width:80%;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">实施者:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="implement_people" name="implement_people" placeholder="" style="width:80%;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">标记:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="remark" name="remark" placeholder="" style="width:80%;" disabled=false>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">再实施日:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="again_implement_time" name="again_implement_time" placeholder="" style="width:80%;">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">再实施者:</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="again_implement_people" name="again_implement_people" placeholder="" style="width:80%;">
+                  </div>
+                </div>
+                <input type="hidden" name="example_id" id="example_id">
+                <input type="hidden" name="test_file_id" id="test_file_id" value="<%= @test_file_id %>">
+                <button type="submit" class="btn btn-primary" style="margin-left:107px;margin-top:10px;">Submit</button>
+                <button type="reset" class="btn btn-primary" style="margin-left:30px;margin-top:10px;">Reset</button>
+              </form>
             </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">测试结果:</label>
-              <div class="col-sm-10">
-                <select class="form-control" style="width:80%;" id='result' name="result">
-                  <option></option>
-                  <option>OK</option>
-                  <option>NG</option>
-                  <option>NG-OK</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">实施日:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="implement_time" name="implement_time" placeholder="" style="width:80%;">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">实施者:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="implement_people" name="implement_people" placeholder="" style="width:80%;">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">标记:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="remark" name="remark" placeholder="" style="width:80%;" disabled=false>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">再实施日:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="again_implement_time" name="again_implement_time" placeholder="" style="width:80%;">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">再实施者:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="again_implement_people" name="again_implement_people" placeholder="" style="width:80%;">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">img:</label>
-              <div class="col-sm-10">
-              <input type="text" class="form-control screen_img" id="upload_img" name="upload_img" placeholder="">
-              <div id="preview_img" class="preview_img">
-              </div>
-            </div>
-            <input type="hidden" name="example_id" id="example_id">
-            <input type="hidden" name="test_file_id" id="test_file_id" value="<%= @test_file_id %>">
-            <button type="submit" class="btn btn-primary" style="margin-left:107px;margin-top:10px;">Submit</button>
-            <button type="reset" class="btn btn-primary" style="margin-left:30px;margin-top:10px;">Reset</button>
-        </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-  
 </div> 
  <script type="text/javascript">
 
@@ -165,6 +179,27 @@
         $("#again_implement_time").val(data.again_implement_time);
         $("#again_implement_people").val(data.again_implement_people);
         $("#example_id").val(data.example_id);
+        if(typeof(data.flag) == "undefined"){
+          $("#upload_img").attr("disabled",false);
+          $("#preview_img").empty();
+        }else if(data.flag){
+          $("#upload_img").attr("disabled",false);
+          $("#preview_img").empty();
+
+        }else{
+          $("#upload_img").attr("disabled","disabled");
+          $("#preview_img").empty();
+          var new_img = document.createElement('img');
+          new_img.setAttribute('src', data.evidence_uri);
+          new_img.setAttribute('id', "tmp_img");
+          new_img.style.width = "100%";
+          new_img.style.height = "100%";
+          var new_link = document.createElement('a');
+          new_link.target = "_blank";
+          new_link.href = data.evidence_uri;
+          new_link.appendChild(new_img);
+          document.getElementById('preview_img').appendChild(new_link);
+        }
       });
     });
 
@@ -217,11 +252,8 @@
           });
         }
       }
-      
-     
     });
 
-    //添加奇偶选择器
     //$("tr:odd").css("background","#gray");
     //$("tr:odd .example_case").attr("data_key","odd");
     //$("tr:even .example_case").attr("data_key","even");
@@ -232,7 +264,7 @@
       for (var i = 0; i < items.length; ++i) {
         if (items[i].kind == 'file' && items[i].type.indexOf('image/') !== -1){
           img_blob = items[i].getAsFile();
-          preview_img(img_data);
+          preview_img(img_blob);
           var key = $("#example_id").val();
           var send_img_url = "/examples/" + key + "/upload_img";
           send_img(send_img_url,items[i].getAsFile());
@@ -263,6 +295,22 @@
       xhr.onload = function(e) {};
       xhr.send(form_data);
     }
+
+    $("#evidence_form button").on("click",function edit_evidence(){
+      if ($("#upload_img").attr("disabled")){
+        return false;
+      }else{
+        var evidence_id = $("#upload_img").val();
+        var key = $("#example_id").val();
+        var post_data = {evidence_id:evidence_id}
+        var url = "/examples/" + key + "/edit_evidence";
+        $.post(url, post_data, function(data){
+          $("#myModal").modal("hide");
+          $(".modal-backdrop").remove();
+        });
+        return false;
+      }
+    });
 
   });
 
