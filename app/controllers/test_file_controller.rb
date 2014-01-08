@@ -51,8 +51,12 @@ class TestFileController < ApplicationController
 
 	def edit_test_file
     test_file = TestFile.find_by_id(params[:id])
+    project = Project.find(test_file.project_id)
+    test_file_name_1 = test_file.test_file_name
     test_file.test_file_name = params[:test_file_name]
+    test_file_name_2 = params[:test_file_name]
     test_file.save
+    File.rename("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file_name_1}_#{test_file.id}","#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file_name_2}_#{test_file.id}")
     redirect_to :back
 	end
 
@@ -65,14 +69,11 @@ class TestFileController < ApplicationController
 
   #下载相应的测试文件
   def download_testfile
-    #test_file = TestFile.find(params[:test_file_id])
     @example = Example.find_all_by_test_file_id(params[:test_file_id])
     @test_file_id = params[:test_file_id]
     @test_file = TestFile.find(@test_file_id)
     test_file = TestFile.find(@test_file_id)
     project = Project.find(test_file.project_id)
-    p project
-    p "99999999999999999999999999999999999999999999999999999999999"
     example_case = []
     @example.each do |example|
       str = example.content

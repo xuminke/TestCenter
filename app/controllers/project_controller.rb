@@ -127,9 +127,13 @@ class ProjectController < ApplicationController
   #update project
   def edit_project
     project = Project.find_by_id(params[:id])
+    project_name_1 = project.project_name
     project.project_name = params[:project_name]
+    project_name_2=params[:project_name]
     project.description = params[:description]
     project.save
+    File.rename("#{Rails.root}/public/attachment_file/#{project_name_1}_#{project.id}","#{Rails.root}/public/attachment_file/#{project_name_2}_#{project.id}")
+    # File.rename("#{Rails.root}/public/attachment_file/#{project_name}_#{id}")
     redirect_to :back
     
   end
@@ -233,10 +237,60 @@ class ProjectController < ApplicationController
   
   def download
     project = Project.find(params[:id])
-    if File.exist?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}.zip")
+    test_files =TestFile.where("project_id=?",project.id)
+    test_files.each do |item|
+      aa = download_testfile(item.id)
+     FileUtils.cp("#{Rails.root}/public/test.html", "#{Rails.root}/public/test1.html")
+      f = FileUtils.mv("#{Rails.root}/public/test1.html", "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{item.test_file_name}_#{item.id}/test_file/#{item.test_file_name}.html") 
+      File.open("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{item.test_file_name}_#{item.id}/test_file/#{item.test_file_name}.html","wb") do |f| 
+        f.write(aa)
+      end
+    end
+    if (File.exist?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}.zip"))
       File.delete("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}.zip")
     end
     add_to_zip_file("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}.zip","#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}")
     send_file "#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}.zip"
+  end
+
+  #获得文件流
+  def download_testfile(xxx)
+    @example = Example.find_all_by_test_file_id(xxx)
+    @test_file_id = xxx
+    @test_file = TestFile.find(@test_file_id)
+    test_file = TestFile.find(@test_file_id)
+    project = Project.find(test_file.project_id)
+    example_case = []
+    @example.each do |example|
+      str = example.content
+      str_s = str.split(",")
+      str_case = []
+      str_s.each do |str|
+        str_case << str.to_i
+      end
+      example_case << str_case      
+    end
+    arr = []
+    example_case.each do |example|
+      example.each do |e|
+       if(arr.include?(e))
+        next
+      else
+        arr << e
+      end
+      end
+
+    end   
+    @arr={}
+    divisor = []
+    arr.each do |arr|
+      divisor << Divisor.find_by_id(arr)
+    end
+
+    divisor.each do |d|
+      @arr["#{d.id}"] = "#{d.divisor_name}"
+    end
+    aa = render_to_string :layout=>nil
+    aa   =nil 
   end
 end
