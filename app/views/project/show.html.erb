@@ -1,6 +1,6 @@
 <% content_for :content_right do %>
 <div>
-	  <h3><lable style="color:green;"><%= @project.project_name %></lable></h3>
+	  <h3><lable style="color:green;"><a href="/project/diagram/<%= @project.id %>"><%= @project.project_name %></a></lable></h3>
 	  <table class="table" align="center">
 	    <tr>
 	    	<th>测试文件</th>
@@ -13,7 +13,7 @@
 	  	</tr>
 	  <% end %>
 	  </table>
-	  <button class="create_test_file">添加新的测试文件</button>
+	  <button class="create_test_file">创建新的测试文件</button>
     <!-- <h4><lable style="color:green;">已经上传的文件</lable></h4> -->
     <div>
       <div class="attachment_left">
@@ -57,24 +57,23 @@
     <% end %>   
 </div>
 
-<div id="test_file_new_id">
-  <div class="test_file_new_id_top"><label>添加新的测试文件</label></div>
-  <div class="test_file_new_id_content">
-  	<form action="/test_file/create" method="post" class="form-horizontal" role="form">    	
-    		<div class="form-group">
+<div style="border:1px solid #CCC;width:370px;height:150px;position:absolute;top:200px;left:200px;display:none;background-color:white;" id="test_file_new_id">
+    <div class="pro_edit_top" style="width:100%;height:20%;background-color:#3399FF;margin-bottom:15px;font-size: 1.1em;">
+      <label style="margin-left: 10px;margin-top: 3px;font-size: 1.0em;">新建测试文件</label>
+    </div>
+    <form action="/test_file/create" method="post" class="form-horizontal" role="form">     
+        <div class="form-group">
           <label for="inputaffirm" class="col-sm-3 control-label" >文件名:</label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="affirm" name="test_file_name" placeholder="" style="width:80%;"> 
           </div>
-    	  </div>
-    	  <div style="margin-left:95px;">
-    		  <input type="hidden" name="project_id" value="<%= @project.id %>">
-    		  <button type="submit" class="btn btn-primary">提交</button> &nbsp;&nbsp;&nbsp;&nbsp;<button type="reset" class="btn btn-primary">重置</button>&nbsp;&nbsp;&nbsp; <button class="cancel btn btn-primary">取消</button>
-    		</div>
-	  </form>
+        </div>
+        <div style="margin-left:95px;">
+          <input type="hidden" name="project_id" value="<%= @project.id %>">
+          <button type="submit" class="btn btn-primary">提交</button> &nbsp;&nbsp;&nbsp;&nbsp;<button type="reset" class="btn btn-primary">重置</button>&nbsp;&nbsp;&nbsp; <button class="cancel btn btn-primary">取消</button>
+        </div>
+    </form>
   </div>
-	
-</div>
 
 <!-- 修改测试文件 -->
 

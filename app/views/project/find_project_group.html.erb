@@ -29,6 +29,7 @@
           <td><%= link_to 'Diagram', "/project/diagram/#{project.id}"%></td>
           <td><%= link_to 'Update', "#", :class=>"update_project", :data=>project.id %></td>
           <td><%= link_to 'Delete', "/project/destroy/#{project.id}", :onclick => "return confirm('Are you sure?')" %></td>
+          <td><%= link_to 'Download', "/project/download/#{project.id}"%></td>
         </tr>     
       <% end %>
     </table>    
@@ -41,8 +42,10 @@
   </div>
   <button class="create_project">添加新的作业</button>
 </div>
-  <div style="border:1px solid #CCC;width:370px;height:250px;position:absolute;top:200px;left:200px;display:none;background-color:white;" id="pro_edit">
-    <div class="pro_edit_top" style="width:100%;height:15%;background-color:green;margin-bottom:15px;"></div>
+  <div style="border:1px solid #CCC;width:370px;height:200px;position:absolute;top:200px;left:200px;display:none;background-color:white;" id="pro_edit">
+    <div class="pro_edit_top" style="width:100%;height:15%;background-color:#3399FF;margin-bottom:15px;">
+      <label style="margin-left: 10px;margin-top: 5px;font-size: 1.0em;">修改作业</label>
+    </div>
     <form method="post" id="pro_edit_form" class="form-horizontal" role="form">
       <div class="form-group">
         <label for="inputstatus" class="col-sm-3 control-label">项目名：</label>
@@ -63,32 +66,39 @@
   </div>
 
   <!--  添加新的作业  -->
-<div id="new_project_id", class="new_project" style="background:white;">
-  <div id="new_project_dialog"><label style="font-size:1.2em;">Create new Project </label></div>  
+<div id="new_project_id", class="new_project" style="border:1px solid #CCC;width:370px;height:200px;position:absolute;top:200px;left:200px;display:none;background-color:white;">
+  <div id="new_project_dialog" style="width:100%;height:15%;background-color:#3399FF;margin-bottom:15px;"><label style="margin-left: 10px;margin-top: 5px;font-size: 1.0em;">添加新作业</label></div>  
   <div id="project_form" style="margin-top:10px;">
     <%= form_for (@project_new), url:{action: "create"} do |f| %>
-      <div style="margin-left:10px;">     
+      <div style="margin-left:20px;">     
         <label>项目名：</label><%= f.text_field :project_name %><br/>
       </div>
-      <div style="margin-left:10px;margin-top:10px;">     
+      <div style="margin-left:20px;margin-top:10px;">     
         <label>编&nbsp;&nbsp;&nbsp;号：</label>
         <%= f.select :work_year, options_for_select(@work_year), :class=>"work_year_select",:onchange=>"change_identifer()" %>
         <%= f.select :identifer,options_for_select(@identifers), :id=>"get_identifer" %>
         <br/>
       </div> 
-      <div style="margin-top:10px;margin-left:10px;">
+      <div style="margin-top:10px;margin-left:20px;">
         <label>详&nbsp;&nbsp;&nbsp;细：</label><%= f.text_field :description %><br/>
         <%= hidden_field_tag 'group_id', @group_id %>
       </div>
-      <div style="margin-top:10px;margin-left:75px;">
-        <%= f.submit '提交' %> &nbsp;&nbsp;&nbsp;&nbsp;<button type="reset">重置</button>&nbsp;&nbsp;&nbsp; <button class="cancel">取消</button>
+      <div style="margin-top:10px;margin-left:80px;">
+        <%= f.submit '提交',:class=>"btn btn-primary" %> &nbsp;&nbsp;&nbsp;&nbsp;<button type="reset" class="btn btn-primary">重置</button>&nbsp;&nbsp;&nbsp; <button class="cancel btn btn-primary">取消</button>
       </div> 
     <% end %>
   </div>
 </div>
 
 <script>
-  $("document").ready(function(){
+  window.onload=function(){
+    var xx=document.getElementById("new_project_id");
+    var update = document.getElementById("pro_edit");
+    tuozhuai(xx);
+    tuozhuai(update);
+  }
+
+  $("document").ready(function(){   
     $(".update_project").click(function(){
       $("#pro_edit").css("display","block");
       var key = $(this).attr("data");
