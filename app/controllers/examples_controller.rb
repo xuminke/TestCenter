@@ -77,7 +77,9 @@ class ExamplesController < ApplicationController
 
   def get_info
     @rsc = Example.find(params[:id])
-    render :json =>{
+    test_file = @rsc.test_file
+    project = test_file.project
+    result_data = {
             :example_id => @rsc.id,
             :status => @rsc.status,
             :affirm =>@rsc.affirm,
@@ -88,6 +90,18 @@ class ExamplesController < ApplicationController
             :again_implement_time =>@rsc.again_implement_time,
             :again_implement_people =>@rsc.again_implement_people
           }
+    evidence = @rsc.evidence
+    if evidence
+      if evidence.example_id != evidence.evidence_id
+        result_data[:flag] = true
+        result_data[:evidence_uri] = "/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/evidence/#{evidence.evidence_id}.png"
+      else
+        result_data[:flag] = false
+        result_data[:evidence_uri] = "/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/evidence/#{evidence.example_id}.png"
+      end
+    end
+
+    render :json => result_data
   end
   
 
@@ -126,16 +140,49 @@ class ExamplesController < ApplicationController
   end
 
   def upload_img
-    puts "*********************"
-    puts request.form_data?
-    puts request.content_length
-    puts request.body
-    File.open("#{Rails.root}/public/screen_shot/#{params[:id]}.png", "wb") do |f|
+    example = Example.find(params[:id])
+    test_file = example.test_file
+    project = test_file.project
+    evidence = example.evidence
+    if evidence.blank?
+      evidence = Evidence.new
+      evidence.example_id = example.id
+      evidence.project_id = project.id
+      evidence.test_file_id = test_file.id
+      evidence.evidence_id = example.id
+      evidence.save
+    end
+    File.open("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/evidence/#{params[:id]}.png", "wb") do |f|
       f.write(params[:upload_file].read)
     end
     render :json=>{
-      :example_case=>""
+      :success=>"success"
     }
+  end
+
+  def edit_evidence
+    example = Example.find(params[:id])
+    test_file = example.test_file
+    project = test_file.project
+    evidence = example.evidence
+    if evidence.blank?
+      evidence = Evidence.new
+      evidence.example_id = example.id
+      evidence.project_id = project.id
+      evidence.test_file_id = test_file.id
+    end
+    if test_file.examples[params[:evidence_id].to_i-1]
+      evidence.evidence_id = test_file.examples[params[:evidence_id].to_i-1].id 
+      evidence.save
+      render :json=>{
+        :success=>"success"
+      }
+    else
+      render :json=>{
+        :success=>"failed"
+      }
+    end
+    
   end
 
 end

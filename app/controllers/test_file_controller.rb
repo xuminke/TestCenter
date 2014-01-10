@@ -26,6 +26,7 @@ class TestFileController < ApplicationController
     #在public相应的作业目录下创建相应的作业文件夹
 		Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}")
     Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/test_file")
+    Dir.mkdir("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/evidence")
 		project.save
 		id = @test_file.id
 		redirect_to :controller=>"project" ,:action=>"show", :id=>@test_file.project_id
@@ -46,6 +47,7 @@ class TestFileController < ApplicationController
     test_file.destroy
     File.directory?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}")
     File.directory?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{test_file.test_file_name}_#{test_file.id}/test_file")
+    File.directory?("#{Rails.root}/public/attachment_file/#{project.project_name}_#{project.id}/#{@test_file.test_file_name}_#{@test_file.id}/evidence")
     redirect_to :back
 	end
 

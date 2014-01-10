@@ -6,6 +6,7 @@ TestCenter::Application.routes.draw do
       get 'get_info'
       post 'edit_case'
       post 'upload_img'
+      post 'edit_evidence'
     end
     collection do
       post 'set_default'

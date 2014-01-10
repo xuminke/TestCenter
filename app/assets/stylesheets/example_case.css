@@ -157,6 +157,12 @@
   #example_table tr:nth-child(even){
    /* background-color: #7575A3;*/
   }
+
+  form {
+    margin-top: 10px;
+  }
+  .edit-tab {
+    width: 90%;
   #content_top{
     width: 100%;
 
